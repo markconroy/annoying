@@ -147,6 +147,7 @@
     })
 
     button.addEventListener('click', function() {
+      console.log('Click');
       let url = `https://annoying.mark.ie?message=${quoteContent.innerText}&author=${quoteAuthorText.innerText}`;
       navigator.clipboard.writeText(url);
       confirm.removeAttribute('hidden');
