@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Who's Annoying Me Now?</title>
+  <style>
+    :root {
+      --size: 1rem;
+      --size-small: calc(var(--size) / 2);
+      --size-large: calc(var(--size) * 2);
+      --color-black: #333;
+    }
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+      transition: .3s;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      min-height: 100vh;
+      line-height: 1.5;
+      font-family: 'Roboto', sans-serif;
+    }
+    .item {
+      position: fixed;
+      inset: 0;
+    }
+    .item--image {
+      z-index: -1;
+    }
+    .item--overlay {
+      background-color: aqua;
+      opacity: .8;
+    }
+    .item--message {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .quote {
+      max-width: 768px;
+      border-left: var(--size-small) solid var(--color-black);
+      padding: var(--size);
+      font-size: var(--size-large);
+      line-height: 2;
+    }
+    .cta {
+      position: fixed;
+      bottom: var(--size);
+      right: var(--size);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: var(--size);
+      background-color: white;
+    }
+    .cta__button {
+      background-color: white;
+      border: 1px solid var(--color-black);
+      color: var(--color-black);
+      padding: var(--size-small);
+      border-radius: var(--size-small);
+    }
+    .cta__button:focus,
+    .cta__button:hover {
+      background-color: var(--color-black);
+      color: white;
+    }
+    .cta__confirm {
+      border-top: 1px solid var(--color-black);
+      margin-top: var(--size-small);
+      padding-top: var(--size-small);
+    }
+  </style>
+</head>
+<body>
+  <div class="item item--image">
+    <img src="mark.jpg" alt="Mark Conroy, just trying to get some work done.">
+  </div>
+
+  <div class="item item--overlay"></div>
+  
+  <div class="item item--message">
+    <blockquote class="quote">
+      <div class="quote__content" contenteditable></div>
+      <cite class="quote__author" contenteditable>
+        - <span class="quote__author-text"></span>
+        <span class="quote__author-year"></span>
+      </cite>
+    </blockquote>
+  </div>
+
+  <div class="cta">
+    <button class="cta__button" type="button">
+      Create URL
+    </button>
+    <div class="cta__confirm" hidden>Link copied to clipboard</div>
+  </div>
+    
+  <script>
+    const date = new Date();
+    let params = (new URL(document.location)).searchParams;
+    let message = params.get('message');
+    let author = params.get('author');
+    let imageSrc = params.get('image');
+    
+    const quoteContent = document.querySelector('.quote__content');
+    const quoteAuthorText = document.querySelector('.quote__author-text');
+    const quoteAuthorYear = document.querySelector('.quote__author-year');
+    const image = document.querySelector('.item--image img');
+    const cta = document.querySelector('.cta');
+    const button = document.querySelector('.cta__button');
+    const confirm = document.querySelector('.cta__confirm');
+    const contenteditableContent = document.querySelector('[contenteditable');
+
+    quoteContent.textContent = message;
+    quoteAuthorText.textContent = `${author}`;
+    quoteAuthorYear.textContent = `- ${date.getFullYear()}`;
+    if (imageSrc) {
+      image.src = `${imageSrc}.jpg`;
+      image.alt = `${imageSrc} annoying Mark, yet again.`;
+    }
+
+    contenteditableContent.addEventListener('click', function() {
+      cta.style.display = 'flex';
+    })
+
+    button.addEventListener('click', function() {
+      let url = `https://annoying.mark.ie?message=${quoteContent.innerText}&author=${quoteAuthorText.innerText}`;
+      navigator.clipboard.writeText(url);
+      confirm.removeAttribute('hidden');
+      setTimeout(() => {
+        confirm.setAttribute('hidden', true);
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
