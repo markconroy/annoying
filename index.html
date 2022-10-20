@@ -98,10 +98,10 @@
   
   <div class="item item--message">
     <blockquote class="quote">
-      <div class="quote__content" contenteditable></div>
+      <div class="quote__content" contenteditable>I'm happily doing my work at the moment.</div>
       <cite class="quote__author" contenteditable>
-        - <span class="quote__author-text"></span>
-        <span class="quote__author-year"></span>
+        - <span class="quote__author-text">Mark Conroy</span>
+        <span class="quote__author-year">2022</span>
       </cite>
     </blockquote>
   </div>
@@ -129,8 +129,12 @@
     const confirm = document.querySelector('.cta__confirm');
     const contenteditableContent = document.querySelector('[contenteditable');
 
-    quoteContent.textContent = message;
-    quoteAuthorText.textContent = `${author}`;
+    if (message) {
+      quoteContent.textContent = message;
+    }
+    if (author) {
+      quoteAuthorText.textContent = `${author}`;
+    }
     quoteAuthorYear.textContent = `- ${date.getFullYear()}`;
     if (imageSrc) {
       image.src = `${imageSrc}.jpg`;
