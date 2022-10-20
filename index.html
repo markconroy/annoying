@@ -128,7 +128,7 @@
     const cta = document.querySelector('.cta');
     const button = document.querySelector('.cta__button');
     const confirm = document.querySelector('.cta__confirm');
-    const contenteditableContent = document.querySelector('[contenteditable');
+    const contenteditableContent = document.querySelectorAll('[contenteditable');
 
     if (message) {
       quoteContent.textContent = message;
@@ -142,12 +142,13 @@
       image.alt = `${imageSrc} annoying Mark, yet again.`;
     }
 
-    contenteditableContent.addEventListener('click', function() {
-      cta.style.display = 'flex';
-    })
+    contenteditableContent.forEach(item => {
+      item.addEventListener('click', function() {
+        cta.style.display = 'flex';
+      });
+    });
 
     button.addEventListener('click', function() {
-      console.log('Click');
       let url = `https://annoying.mark.ie?message=${quoteContent.innerText}&author=${quoteAuthorText.innerText}`;
       navigator.clipboard.writeText(url);
       confirm.removeAttribute('hidden');
